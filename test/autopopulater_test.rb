@@ -1,4 +1,5 @@
 require "test_helper"
+require "minitest/mock"
 
 class AutopopulaterTest < ActiveSupport::TestCase
   test "it has a version number" do
@@ -19,14 +20,18 @@ class AutopopulaterTest < ActiveSupport::TestCase
 
   test "it skips autopopulation if disabled" do
     u = User.new(autopopulated: false)
-    u.valid?
-    assert u.email.nil?
+
+    u.stub(:autopopulate_attributes, proc { raise "should not be called" }) do
+      u.valid?
+      assert u.email.nil?
+    end
   end
 
   test "it skips autopopulation if attr is already populated" do
     email = 'custom@email.com'
     u = User.new(email:)
     u.valid?
+
     assert_equal u.email, email
   end
 
