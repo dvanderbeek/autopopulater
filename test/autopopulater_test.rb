@@ -29,4 +29,8 @@ class AutopopulaterTest < ActiveSupport::TestCase
     u.valid?
     assert_equal u.email, email
   end
+
+  test "it lets you introspect autopopulated attributes" do
+    assert_equal User.autopopulated_attributes[0][:keys], [:name, :email]
+  end
 end
