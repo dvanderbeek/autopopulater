@@ -4,7 +4,6 @@ module Autopopulater
 
     included do
       class_attribute :autopopulated_attributes
-      attribute :autopopulated, :boolean, default: true
     end
 
     class_methods do
@@ -12,6 +11,8 @@ module Autopopulater
         self.autopopulated_attributes ||= []
 
         autopopulated_attributes << { keys: attributes, with: with }
+
+        attribute :autopopulated, :boolean, default: true
 
         before_validation :autopopulate_attributes, on: :create, if: :autopopulated
       end
