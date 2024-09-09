@@ -121,6 +121,8 @@ GEM
     nio4r (2.7.3)
     nokogiri (1.16.7-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.16.7-x86_64-darwin)
+      racc (~> 1.4)
     psych (5.1.2)
       stringio
     puma (6.4.2)
@@ -170,6 +172,7 @@ GEM
       io-console (~> 0.5)
     securerandom (0.3.1)
     sqlite3 (2.0.4-arm64-darwin)
+    sqlite3 (2.0.4-x86_64-darwin)
     stringio (3.1.1)
     thor (1.3.2)
     timeout (0.4.1)
@@ -184,6 +187,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-darwin-22
 
 DEPENDENCIES
   autopopulater!
