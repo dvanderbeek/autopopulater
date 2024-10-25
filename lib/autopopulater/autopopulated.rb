@@ -18,12 +18,12 @@ module Autopopulater
       end
     end
 
-    def autopopulate_attributes
+    def autopopulate_attributes(overwrite: false)
       self.class.autopopulated_attributes.each do |a|
         value = fetch_value(a[:with])
 
         a[:keys].each do |attr|
-          next unless send(attr).blank?
+          next unless overwrite || send(attr).blank?
 
           send("#{attr}=", attr_value(value, attr))
         end

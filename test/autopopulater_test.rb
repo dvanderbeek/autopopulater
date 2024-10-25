@@ -35,6 +35,13 @@ class AutopopulaterTest < ActiveSupport::TestCase
     assert_equal u.email, email
   end
 
+  test "it allows an attr to be overwritten" do
+    u = User.new(email: 'custom@email.com')
+    u.autopopulate_attributes(overwrite: true)
+
+    assert_equal u.email, "email@example.com"
+  end
+
   test "it lets you introspect autopopulated attributes" do
     assert_equal User.autopopulated_attributes[0][:keys], [:name, :email]
   end
