@@ -24,7 +24,7 @@ module Autopopulater
           next unless overwrite || send(attr).blank?
 
           if Autopopulater.test_mode?
-            if (stub = Autopopulater.test_stub_for(attr))
+            if (stub = Autopopulater.test_stub_for(self.class, attr))
               send("#{attr}=", stub)
             elsif (test_object = Autopopulater.test_lookup_for(self.class, a[:keys]))
               value = fetch_value(->(_) { test_object })

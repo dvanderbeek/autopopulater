@@ -15,9 +15,9 @@ module Autopopulater
       !!@test_mode
     end
 
-    def test_stub_for(attribute)
+    def test_stub_for(model_class, attribute)
       return nil unless test_mode?
-      @test_stubs&.dig(attribute)
+      @test_stubs&.dig(model_class)&.dig(attribute)
     end
 
     def test_lookup_for(model_class, attributes)

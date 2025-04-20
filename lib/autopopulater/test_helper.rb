@@ -15,9 +15,10 @@ module Autopopulater
       Autopopulater.test_mode = false
     end
 
-    def stub_autopopulater(attribute, value)
+    def stub_autopopulater(model_class, attribute, value)
       enable_autopopulater_test_mode
-      Autopopulater.test_stubs[attribute] = value
+      Autopopulater.test_stubs[model_class] ||= {}
+      Autopopulater.test_stubs[model_class][attribute] = value
     end
 
     def clear_autopopulater_stubs

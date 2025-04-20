@@ -50,10 +50,8 @@ class AutopopulaterTest < ActiveSupport::TestCase
   end
 
   test "it uses test stubs when in test mode" do
-    # TODO: Should also specify the model
-    # e.g. stub_autopopulater(User, :name, "Test Name")
-    stub_autopopulater(:name, "Test Name")
-    stub_autopopulater(:email, "test@example.com")
+    stub_autopopulater(User, :name, "Test Name")
+    stub_autopopulater(User, :email, "test@example.com")
 
     u = User.new
     u.valid?
