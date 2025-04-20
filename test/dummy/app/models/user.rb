@@ -2,7 +2,7 @@ class User < ApplicationRecord
   ######################################################################################################
   # Using a separate class:
   ######################################################################################################
-  autopopulates :name, :email, with: ->(user) { UserApiClient.fetch(user) }
+  autopopulates :email, with: ->(user) { UserApiClient.fetch(user) }
   # TODO: Add `mapping` option in case result from `with` doesn't have the exact same attributes as this model
   ######################################################################################################
 
@@ -42,10 +42,10 @@ class User < ApplicationRecord
   ######################################################################################################
   # Using a method that matches the pattern `fetch_#{attr}`
   ######################################################################################################
-  # autopopulates :name
+  autopopulates :name
 
-  # def fetch_name
-  #   'David'
-  # end
+  def fetch_name
+    'David'
+  end
   ######################################################################################################
 end

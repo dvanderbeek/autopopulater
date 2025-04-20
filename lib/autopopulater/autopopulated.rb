@@ -20,12 +20,23 @@ module Autopopulater
 
     def autopopulate_attributes(overwrite: false)
       self.class.autopopulated_attributes.each do |a|
-        value = fetch_value(a[:with])
-
         a[:keys].each do |attr|
           next unless overwrite || send(attr).blank?
 
-          send("#{attr}=", attr_value(value, attr))
+          if Autopopulater.test_mode?
+            if (stub = Autopopulater.test_stub_for(attr))
+              send("#{attr}=", stub)
+            elsif (test_object = Autopopulater.test_lookup_for(self.class, a[:keys]))
+              value = fetch_value(->(_) { test_object })
+              send("#{attr}=", attr_value(value, attr))
+            else
+              value = fetch_value(a[:with])
+              send("#{attr}=", attr_value(value, attr))
+            end
+          else
+            value = fetch_value(a[:with])
+            send("#{attr}=", attr_value(value, attr))
+          end
         end
       end
     end

@@ -2,6 +2,8 @@ require "test_helper"
 require "minitest/mock"
 
 class AutopopulaterTest < ActiveSupport::TestCase
+  include Autopopulater::TestHelper
+
   test "it has a version number" do
     assert Autopopulater::VERSION
   end
@@ -43,6 +45,34 @@ class AutopopulaterTest < ActiveSupport::TestCase
   end
 
   test "it lets you introspect autopopulated attributes" do
-    assert_equal User.autopopulated_attributes[0][:keys], [:name, :email]
+    assert_equal User.autopopulated_attributes.collect { |e| e[:keys] }.flatten.sort,
+                 [:name, :email].sort
+  end
+
+  test "it uses test stubs when in test mode" do
+    stub_autopopulater(:name, "Test Name")
+    stub_autopopulater(:email, "test@example.com")
+
+    u = User.new
+    u.valid?
+
+    assert_equal u.name, "Test Name"
+    assert_equal u.email, "test@example.com"
+  end
+
+  test "it uses test lookups when in test mode" do
+    test_user = OpenStruct.new(name: "Test User", email: "test@example.com")
+    register_test_lookup(User, [:email], test_user)
+
+    u = User.new
+    u.valid?
+
+    assert_equal u.email, "test@example.com"
+  end
+
+  test "it resets test mode between tests" do
+    assert_equal false, Autopopulater.test_mode?
+    assert_empty Autopopulater.test_stubs
+    assert_empty Autopopulater.test_lookups
   end
 end
